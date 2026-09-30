@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poser des questions – Fragewörter</title>
+<style>
+:root{--bgd:linear-gradient(160deg,#e0f2fe,#fdf2f8 60%,#fef9c3);--bg:#f4f6fb;--card:#fff;--tx:#1f2937;--mu:#6b7280;--pr:#2563eb;--ok:#16a34a;--bad:#dc2626;--l:#e5e7eb;--a1:#16a34a;--a2:#ea580c;--a3:#7c3aed}
+@media(prefers-color-scheme:dark){:root{--bgd:#111827;--bg:#111827;--card:#1f2937;--tx:#f3f4f6;--mu:#9ca3af;--l:#374151}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bgd);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.w{max-width:760px;margin:0 auto;padding:12px}
+h1{font-size:1.4rem;margin:4px 0 10px;padding:12px 14px;border-radius:16px;color:#fff;background:linear-gradient(120deg,#2563eb,#7c3aed,#ec4899);box-shadow:0 3px 10px #7c3aed55}
+.top{background:var(--card);border-radius:18px;padding:12px;box-shadow:0 1px 4px #0002}
+.stats{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.lvl{font-weight:700}
+.bar{flex:1;min-width:120px;height:14px;background:var(--l);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f59e0b,#ef4444);transition:width .5s}
+.pill{background:var(--l);border-radius:20px;padding:2px 10px;font-size:.85rem;white-space:nowrap}
+.badges{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.b{opacity:.35;filter:grayscale(1)}.b.on{opacity:1;filter:none;background:#fef3c7;color:#92400e}
+.formula{margin:12px 0;padding:10px 12px;background:#fef9c3;color:#422006;border-radius:6px;font-size:.95rem;transform:rotate(-.6deg);box-shadow:2px 3px 6px #0003}.formula .de{color:#78350f}
+.formula b{color:#b45309}
+.nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:8px;margin:12px 0}
+.nav button{border:2px solid var(--l);border-bottom-width:5px;background:var(--card);color:var(--tx);border-radius:14px;padding:8px 6px;cursor:pointer;font:inherit;font-size:.8rem;text-align:center;transition:transform .15s}.nav button:hover{transform:translateY(-2px)}.nav .ic{display:block;font-size:1.5rem}
+.nav button.act{transform:translateY(-3px);box-shadow:0 5px 12px #0003;background:#fef3c7;color:#422006}
+.nav small{display:block;font-weight:700}
+.a1{color:var(--a1)}.a2{color:var(--a2)}.a3{color:var(--a3)}
+.card{background:var(--card);border-radius:18px;padding:14px;box-shadow:0 1px 4px #0002;border-top:8px solid var(--c,var(--pr))}
+.tag{display:inline-block;color:#fff;border-radius:20px;padding:1px 8px;font-size:.8rem;font-weight:700}
+.row{padding:10px;border:2px solid var(--l);border-radius:10px;margin:8px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.row.col{flex-direction:column;align-items:stretch}
+.row.ok{border-color:var(--ok);background:#16a34a14}.row.bad{border-color:var(--bad);background:#dc262614}
+.sol{color:var(--bad);font-weight:600;flex-basis:100%}
+.fr{min-width:110px}.de{color:var(--mu)}
+select,input[type=text]{font:inherit;padding:6px 8px;border-radius:8px;border:2px solid var(--l);background:var(--bg);color:var(--tx)}
+input[type=text]{width:100%}
+mark{background:#fde68a;color:#000;border-radius:4px;padding:0 3px}
+.zone{min-height:44px;border:2px dashed var(--l);border-radius:10px;padding:6px;display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;border:0;background:var(--pr);color:#fff;border-radius:8px;padding:5px 10px;cursor:pointer}
+.pool .chip{background:var(--l);color:var(--tx)}
+label.o{display:block;padding:6px 8px;border-radius:8px;cursor:pointer}
+label.o:hover{background:var(--l)}
+.btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:9px 16px;cursor:pointer;background:var(--pr);color:#fff;box-shadow:0 4px 0 #1e3a8a;transition:transform .1s}.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.sec{background:var(--l);color:var(--tx);box-shadow:0 4px 0 #9ca3af}
+.btn:disabled{opacity:.4;cursor:default}
+.locked{pointer-events:none}
+#msg{margin-top:10px;font-weight:700;min-height:1.4em}
+.pop{position:fixed;top:-30px;font-size:1.6rem;animation:f 1.6s ease-in forwards;pointer-events:none}
+@keyframes f{to{transform:translateY(105vh) rotate(360deg);opacity:.6}}
+</style>
+</head>
+<body>
+<div class="w">
+<h1>❓ Poser des questions – Fragewörter</h1>
+<div class="top">
+ <div class="stats">
+  <span class="lvl" id="lvl"></span>
+  <div class="bar"><i id="xpb"></i></div>
+  <span class="pill" id="xp"></span>
+  <span class="pill" id="st"></span>
+ </div>
+ <div class="badges" id="bd"></div>
+</div>
+<div class="formula"><b>Fragewort</b> + <b>est-ce que</b> + Aussagesatz (+ Ergänzung) + <b>?</b><br>
+<span class="de">Beispiel: Où est-ce que tu habites ? · Vor Vokal: est-ce <b>qu'</b>elle / qu'il …</span></div>
+<div class="nav" id="nav"></div>
+<div class="card">
+ <span class="tag" id="tg"></span> <b id="tt"></b>
+ <p id="ins"></p>
+ <div id="it"></div>
+ <div class="btns"><button class="btn" id="chk">Prüfen ✔</button><button class="btn sec" id="nw">Neue Runde 🔄</button></div>
+ <div id="msg"></div>
+</div>
+</div>
+<script>
+const $=s=>document.querySelector(s),sh=a=>[...a].sort(()=>Math.random()-.5),cap=s=>s[0].toUpperCase()+s.slice(1);
+const norm=s=>s.toLowerCase().replace(/[’‘`´]/g,"'").replace(/\s+/g,' ').replace(/\s*\?\s*$/,'').trim();
+const W=[{f:'où',d:'wo'},{f:'quand',d:'wann'},{f:'pourquoi',d:'warum'},{f:'comment',d:'wie'},{f:'avec qui',d:'mit wem'},{f:'à quelle heure',d:'um wie viel Uhr'}];
+const S=[
+{w:'où',t:'est-ce que tu habites',s:'Tu habites à Dresde.',hi:'à Dresde',de:'Wo wohnst du?'},
+{w:'où',t:'est-ce que vous mangez',s:'Vous mangez à la cantine.',hi:'à la cantine',de:'Wo esst ihr?'},
+{w:'quand',t:"est-ce qu'elle arrive",s:'Elle arrive lundi.',hi:'lundi',de:'Wann kommt sie an?'},
+{w:'quand',t:'est-ce que nous avons EPS',s:'Nous avons EPS jeudi.',hi:'jeudi',de:'Wann haben wir Sport?'},
+{w:'avec qui',t:'est-ce que tu joues au foot',s:'Tu joues au foot avec Paul.',hi:'avec Paul',de:'Mit wem spielst du Fußball?'},
+{w:'avec qui',t:"est-ce qu'elles parlent",s:'Elles parlent avec Léa.',hi:'avec Léa',de:'Mit wem sprechen sie?'},
+{w:'à quelle heure',t:"est-ce qu'ils rentrent",s:'Ils rentrent à 16 heures.',hi:'à 16 heures',de:'Um wie viel Uhr kommen sie nach Hause?'},
+{w:'à quelle heure',t:'est-ce que tu manges',s:'Tu manges à midi.',hi:'à midi',de:'Um wie viel Uhr isst du?'},
+{w:'pourquoi',t:'est-ce que tu es triste',s:'Tu es triste parce que tu as une mauvaise note.',hi:'parce que tu as une mauvaise note',de:'Warum bist du traurig?'},
+{w:'pourquoi',t:"est-ce qu'il apprend le français",s:"Il apprend le français parce qu'il aime la France.",hi:"parce qu'il aime la France",de:'Warum lernt er Französisch?'},
+{w:'comment',t:"est-ce qu'il va au collège",s:'Il va au collège en bus.',hi:'en bus',de:'Wie kommt er zur Schule?'},
+{w:'comment',t:'est-ce que vous trouvez le prof',s:'Vous trouvez le prof sympa.',hi:'sympa',de:'Wie findet ihr den Lehrer?'}];
+const SC=[{who:'Gabriel',i:'🇫🇷 Gabriel aus Lyon kommt als Austauschschüler zu euch.'},{who:'Léa',i:'🎓 Léa aus Paris ist neu in eurer Klasse.'},{who:'Camille',i:'✉️ Deine neue Brieffreundin Camille aus Marseille freut sich auf deine erste E-Mail.'},{who:'einen Star',i:'🎤 Du darfst einen berühmten französischen Sänger für den Schülerblog interviewen.'}];
+const LVN={1:'🌱 Warm-up',2:'🔧 Werkstatt',3:'🚀 Mission'};
+const Q=i=>cap(i.w)+' '+i.t+' ?';
+const pick=n=>sh(S).slice(0,n);
+const el=(h,c='row')=>{const d=document.createElement('div');d.className=c;d.innerHTML=h;return d};
+
+/* ---------- Aufgabentypen ---------- */
+const T=[
+{n:'Fragewörter verstehen',ic:'🔤',a:1,i:'Ordne jedem Fragewort die deutsche Bedeutung zu.',b(){
+ const de=sh(W.map(x=>x.d)),o='<option value="">…</option>'+de.map(d=>`<option>${d}</option>`).join('');
+ return W.map(x=>{const e=el(`<b class="fr">${x.f}</b><select>${o}</select>`);return{e,t:()=>e.querySelector('select').value===x.d,sol:x.d}})}},
+{n:'Fragesatz bauen',ic:'🧩',a:1,i:'Tippe die Wörter in die richtige Reihenfolge: Fragewort + est-ce que + Aussagesatz + ?',b(){
+ return pick(4).map(i=>{const tk=(i.w+' '+i.t).split(' ').concat('?');let pool=sh(tk).map(t=>({t})),ans=[];
+  const e=el(`<div class="de">🇩🇪 ${i.de}</div><div class="zone"></div><div class="zone pool"></div>`,'row col');
+  const [,A,P]=e.children;
+  const draw=()=>{[[A,ans,pool],[P,pool,ans]].forEach(([z,f,to])=>{z.innerHTML='';f.forEach(c=>{const x=document.createElement('button');x.className='chip';x.textContent=c.t;x.onclick=()=>{f.splice(f.indexOf(c),1);to.push(c);draw()};z.append(x)})})};
+  draw();return{e,t:()=>ans.map(c=>c.t).join(' ')===tk.join(' '),sol:Q(i)}})}},
+{n:'Das passende Fragewort',ic:'🎯',a:1,i:'Ergänze das Fragewort passend zur deutschen Frage.',b(){
+ const o='<option value="">…</option>'+sh(W).map(x=>`<option>${x.f}</option>`).join('');
+ return pick(5).map(i=>{const e=el(`<span class="de">${i.de}</span><span><select>${o}</select> ${i.t} ?</span>`);
+  return{e,t:()=>e.querySelector('select').value===i.w,sol:Q(i)}})}},
+{n:'Aussage → Frage',ic:'✍️',a:2,i:'Stelle eine Frage nach dem markierten Teil. Achte auf Akzente und Apostrophe!',b(){
+ return pick(4).map(i=>{const e=el(`<div>${i.s.replace(i.hi,`<mark>${i.hi}</mark>`)}</div><div class="de">Frage mit <b>${i.w}</b>:</div><input type="text" autocomplete="off" placeholder="${cap(i.w)} est-ce …">`,'row col');
+  return{e,t:()=>norm(e.querySelector('input').value)===norm(Q(i)),sol:Q(i)}})}},
+{n:'Fehlerdetektiv',ic:'🕵️',a:2,i:'Nur eine Frage ist richtig gebildet. Welche?',b(){
+ return pick(4).map((i,k)=>{const core=i.t.replace(/^est-ce qu(e |')/,''),good=Q(i);
+  const bad=[cap(i.w)+' '+core+' ?',cap(i.t)+' '+i.w+' ?',cap(i.w)+' '+(i.t.includes("qu'")?i.t.replace("qu'","que "):i.t.replace('est-ce que','est-ce'))+' ?'];
+  const e=el(`<div class="de">🇩🇪 ${i.de}</div>`+sh([good,...bad]).map(q=>`<label class="o"><input type="radio" name="r${k}" value="${q}"> ${q}</label>`).join(''),'row col');
+  return{e,t:()=>{const c=e.querySelector('input:checked');return !!c&&c.value===good},sol:good}})}},
+{n:'Interview-Mission',ic:'🎤',a:3,i:'',b(){
+ const sc=SC[(SC.indexOf(this.s)+1+Math.floor(Math.random()*(SC.length-1)))%SC.length];this.s=sc;
+ this.i=sc.i+' Schreibe 3 Fragen – jede mit einem anderen Fragewort (où, quand, pourquoi, comment, avec qui, à quelle heure).';
+ const ins=[];
+ const rx=/^(où|quand|pourquoi|comment|avec qui|à quelle heure) est-ce (que |qu')\S.*$/;
+ const w=v=>{const n=norm(v),m=rx.exec(n);return /\?\s*$/.test(v.trim())&&m?m[1]:null};
+ return [0,1,2].map(k=>{const e=el(`<input type="text" autocomplete="off" placeholder="Frage ${k+1} an ${sc.who} …">`,'row col');ins.push(e.querySelector('input'));
+  return{e,t:()=>{const x=w(ins[k].value);return !!x&&!ins.slice(0,k).some(y=>w(y.value)===x)},sol:'Fragewort + est-ce que + Aussagesatz + ? (jedes Fragewort nur einmal) – z. B. Où est-ce que tu habites ?'}})},
+ note:'Die Grammatik-Struktur prüft das Tool automatisch – ob die Frage inhaltlich sinnvoll ist, klärt ihr mit eurer Partnerin / eurem Partner. 😉'}
+];
+
+/* ---------- Gamification ---------- */
+const LV=['Débutant·e','Curieux·se','Explorateur·trice','Pro des questions','Maître·sse des questions','Légende 👑'];
+const BD={first:'🌱 Erster Schritt',perf:'⭐ Volltreffer',s5:'🔥 5er-Serie',s10:'🚀 10er-Serie',all:'🎓 Alle 6 Aufgabentypen',a3:'🏆 Interview-Profi'};
+const G={xp:0,st:0,best:0,bd:{},done:{}};
+let cur=0,items=[],checked=false;
+const lv=()=>Math.min(Math.floor(G.xp/100),5);
+function ui(){$('#lvl').textContent='Level '+(lv()+1)+' · '+LV[lv()];$('#xp').textContent='⚡ '+G.xp+' XP';$('#st').textContent='🔥 Serie: '+G.st;
+ $('#xpb').style.width=(lv()==5?100:G.xp%100)+'%';
+ $('#bd').innerHTML=Object.entries(BD).map(([k,v])=>`<span class="pill b${G.bd[k]?' on':''}">${v}</span>`).join('')}
+function confetti(){for(let i=0;i<26;i++){const s=document.createElement('span');s.className='pop';s.textContent=['🎉','⭐','✨','❓','🇫🇷'][i%5];s.style.left=Math.random()*95+'vw';s.style.animationDelay=Math.random()*.6+'s';document.body.append(s);setTimeout(()=>s.remove(),2400)}}
+
+/* ---------- Ablauf ---------- */
+function nav(){$('#nav').innerHTML='';T.forEach((t,k)=>{const b=document.createElement('button');b.className=k==cur?'act':'';b.style.borderColor=`var(--a${t.a})`;b.innerHTML=`<span class="ic">${t.ic}</span>${k+1}. ${t.n}<small class="a${t.a}">${LVN[t.a]}${G.done[k]?' ✔':''}</small>`;b.onclick=()=>{cur=k;load()};$('#nav').append(b)})}
+function load(){const t=T[cur];checked=false;items=t.b();
+ $('#tg').textContent=LVN[t.a];$('.card').style.setProperty('--c',`var(--a${t.a})`);$('#tg').style.background=`var(--a${t.a})`;$('#tt').textContent=t.ic+' '+(cur+1)+'. '+t.n+(t.s?' – '+t.s.who:'');$('#ins').textContent=t.i;
+ const box=$('#it');box.innerHTML='';box.className='';items.forEach(x=>box.append(x.e));
+ $('#msg').textContent=t.note||'';$('#chk').disabled=false;nav();ui()}
+$('#chk').onclick=()=>{if(checked)return;checked=true;
+ const l0=lv();let ok=0,gain=0;
+ items.forEach(x=>{const g=x.t();x.e.classList.add(g?'ok':'bad');
+  if(g){ok++;G.st++;G.best=Math.max(G.best,G.st);gain+=10+(G.st>=3?5:0)}else{G.st=0;const s=document.createElement('div');s.className='sol';s.textContent='→ '+x.sol;x.e.append(s)}});
+ const all=ok==items.length;if(all)gain+=20;G.xp+=gain;G.done[cur]=1;
+ G.bd.first=1;if(all)G.bd.perf=1;if(G.best>=5)G.bd.s5=1;if(G.best>=10)G.bd.s10=1;if(cur==5&&all)G.bd.a3=1;if(Object.keys(G.done).length==6)G.bd.all=1;
+ $('#it').className='locked';$('#chk').disabled=true;
+ $('#msg').textContent=(all?'🎉 Parfait! ':ok>=items.length/2?'👍 Bien! ':'💪 Courage! ')+ok+' von '+items.length+' richtig · +'+gain+' XP'+(lv()>l0?' · ⬆️ Level-Up: '+LV[lv()]:'');
+ if(all||lv()>l0)confetti();nav();ui()};
+$('#nw').onclick=load;
+load();
+</script>
+</body>
+</html>
